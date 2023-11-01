@@ -48,7 +48,7 @@ userSchema.pre('save', async function (next) {
 
 userSchema.pre('findOneAndUpdate', async function (next) {
   console.log(this._update)
-  if (this._update.password && this._update.password.trim().length > 8) {
+  if (this._update.password && this._update.password.trim().length > 7) {
     this._update.password = await bcryptjs.hash(this._update.password, 15)
   } else {
     delete this._update.password

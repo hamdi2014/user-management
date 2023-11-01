@@ -1,5 +1,6 @@
 const User = require('../models/user.model')
 
+// Add a new user to system
 const createUser = async (req, res, next) => {
   try {
     if (!req.body) {
@@ -25,13 +26,17 @@ const createUser = async (req, res, next) => {
   }
 }
 
+/**
+ * Get user by ID
+ * Get a list of users
+ */
 const getUsers = async (req, res, next) => {
   try {
-    if (!req.query.id) {
+    if (!req.params.id) {
       const users = await User.find()
       res.json(users)
     }
-    const userId = req.query.id
+    const userId = req.params.id
     const user = await User.findById(userId)
     if (!user) {
       throw {
@@ -46,6 +51,7 @@ const getUsers = async (req, res, next) => {
   }
 }
 
+// Update user by ID
 const updateUser = async (req, res, next) => {
   try {
     console.log('OK')
@@ -56,7 +62,7 @@ const updateUser = async (req, res, next) => {
       }
     }
 
-    const userId = req.query.id
+    const userId = req.params.id
     const updatedUser = await User.findByIdAndUpdate(userId, req.body, {
       new: true,
       runValidators: true,
@@ -74,16 +80,17 @@ const updateUser = async (req, res, next) => {
   }
 }
 
+// Delete user by ID
 const deleteUser = async (req, res, next) => {
   try {
-    if (!req.query.id) {
+    if (!req.params.id) {
       throw {
         code: 400,
         message: 'user id can not be Empty!',
       }
     }
 
-    const userId = req.query.id
+    const userId = req.params.id
     const deletedUser = await User.findByIdAndDelete(userId)
 
     if (!deletedUser) {
